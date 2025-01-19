@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+    margin: 0;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    padding-left: 100px;
+    gap: 100px;
+    background-color: aliceblue;
+}
+
+.main {
+    min-height: 200vh;
+    background-color: cornflowerblue;
+}
+
+.library {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 50px;
+    padding: 50px;
+}
+
+.book {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 20px;
+}
