@@ -59,11 +59,18 @@ function displayLibrary() {
         const remove = document.createElement('button')
         remove.classList.add('remove')
         remove.textContent = "Remove"
-        remove.dataset.index = index
         remove.addEventListener('click', () => {
             removeBookFromLibrary(index)
         })
         card.appendChild(remove)
+
+        const toggle = document.createElement('button')
+        toggle.classList.add('toggle')
+        toggle.textContent = myLibrary[index].read ? "Not Read" : "Read"
+        toggle.addEventListener('click', () => {
+            toogleRead(index)
+        })
+        card.appendChild(toggle)
 
         library.appendChild(card)
     })
@@ -109,5 +116,10 @@ function addBook(e) {
 
 function removeBookFromLibrary(index) {
     myLibrary.splice(index, 1)
+    displayLibrary()
+}
+
+function toogleRead(index) {
+    myLibrary[index].read = !myLibrary[index].read
     displayLibrary()
 }
