@@ -32,7 +32,7 @@ function displayLibrary() {
     const library = document.querySelector('.library')
     library.replaceChildren()
 
-    myLibrary.forEach(book => {
+    myLibrary.forEach((book, index) => {
         const card = document.createElement('div')
         card.classList.add('book')
 
@@ -56,6 +56,15 @@ function displayLibrary() {
         read.textContent = book.read
         card.appendChild(read)
 
+        const remove = document.createElement('button')
+        remove.classList.add('remove')
+        remove.textContent = "Remove"
+        remove.dataset.index = index
+        remove.addEventListener('click', () => {
+            removeBookFromLibrary(index)
+        })
+        card.appendChild(remove)
+
         library.appendChild(card)
     })
 }
@@ -64,12 +73,15 @@ displayLibrary()
 
 function clickButton() {
     const dialog = document.querySelector('dialog')
+    const form = document.querySelector('form')
     const buttons = document.querySelectorAll('button')
 
     buttons.forEach(button => {
         button.addEventListener('click', (e) => {
-            if (button.classList.contains('new'))
+            if (button.classList.contains('new')) {
+                form.reset()
                 dialog.showModal()
+            }
             else if (button.classList.contains('close'))
                 dialog.close()
             else if (button.classList.contains('add')) {
@@ -92,5 +104,10 @@ function addBook(e) {
         
     const book = new Book(author, title, pages, read)
     addBookToLibrary(book)
+    displayLibrary()
+}
+
+function removeBookFromLibrary(index) {
+    myLibrary.splice(index, 1)
     displayLibrary()
 }
