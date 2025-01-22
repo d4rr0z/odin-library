@@ -1,21 +1,4 @@
-const myLibrary = [
-    {
-        author: "J.R.R. Tolkien", 
-        title: "The Lord of the Rings",
-        pages: 400,
-        read: true
-    },
-    {
-        author: "John W. Campbell",
-        title: "The Thing",
-        pages: 200,
-        read: true
-    },
-    {},
-    {},
-    {},
-    new Book("asd", "asd", 123, false)
-]
+const myLibrary = []
 
 function Book(author, title, pages, read) {
   this.author = author
@@ -50,11 +33,9 @@ function displayLibrary() {
         pages.classList.add('pages')
         pages.textContent = book.pages + " pages"
         card.appendChild(pages)
-        
-        const read = document.createElement('div')
-        read.classList.add('read')
-        read.textContent = book.read
-        card.appendChild(read)
+
+        const buttons = document.createElement('div')
+        buttons.classList.add('buttons')
 
         const remove = document.createElement('button')
         remove.classList.add('remove')
@@ -62,21 +43,22 @@ function displayLibrary() {
         remove.addEventListener('click', () => {
             removeBookFromLibrary(index)
         })
-        card.appendChild(remove)
-
+        
         const toggle = document.createElement('button')
         toggle.classList.add('toggle')
-        toggle.textContent = myLibrary[index].read ? "Not Read" : "Read"
+        toggle.textContent = myLibrary[index].read ? "Read" : "Not Read"
+        toggle.style.backgroundColor = myLibrary[index].read ? 'green' : 'red';
         toggle.addEventListener('click', () => {
             toogleRead(index)
         })
-        card.appendChild(toggle)
+        
+        buttons.appendChild(remove)
+        buttons.appendChild(toggle)
+        card.appendChild(buttons)
 
         library.appendChild(card)
     })
 }
-
-displayLibrary()
 
 function clickButton() {
     const dialog = document.querySelector('dialog')
@@ -92,8 +74,8 @@ function clickButton() {
             else if (button.classList.contains('close'))
                 dialog.close()
             else if (button.classList.contains('add')) {
-                addBook(e)
-                dialog.close()
+                if (addBook(e))
+                    dialog.close()
             }
         })
     })
@@ -104,14 +86,22 @@ clickButton()
 function addBook(e) {
     e.preventDefault()
 
+    const form = e.target.closest('form')
+    if (!form.checkValidity()) {
+        form.reportValidity()
+        return false
+    }
+
     const author = document.getElementById('author').value
     const title = document.getElementById('title').value
     const pages = document.getElementById('pages').value
     const read = document.getElementById('read').checked
-        
+    
     const book = new Book(author, title, pages, read)
     addBookToLibrary(book)
     displayLibrary()
+
+    return true
 }
 
 function removeBookFromLibrary(index) {
